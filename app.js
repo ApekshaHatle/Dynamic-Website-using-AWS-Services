@@ -23,7 +23,7 @@ var callAPI = (NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Tags, AddedBy,
         redirect: 'follow'
     };
     // make API call with parameters and use promises to get response
-    fetch("https://fqdxvcbyt2.execute-api.us-west-2.amazonaws.com/Dev", requestOptions)
+    fetch("YOUR-API-URL", requestOptions)
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));
