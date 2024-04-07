@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finding System</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="app.js"></script>
+</head>
+<body>
+    <header>
+        <h1 class="title">RECIPE FINDING SYSTEM</h1>
+    </header>
+    <div class="container">
+        <div class="left-panel">
+            <label for="name">Dish Name:</label>
+            <input type="text" id="name" name="name" class="input-field">
+            
+            <label for="prep-time">Preparation Time:</label>
+            <input type="text" id="prep-time" name="prep-time" class="input-field">
+            
+            <label for="serves">Serves:</label>
+            <input type="text" id="serves" name="serves" class="input-field">
+            
+            <!-- Add more input fields as needed -->
+            <button id="insert-btn" class="action-btn" onclick="callAPI(document.getElementById('name').value,
+                                                                        document.getElementById('prep-time').value,
+                                                                        document.getElementById('serves').value)">Insert</button>
+            <button id="update-btn" class="action-btn">Update</button>
+            <button id="delete-btn" class="action-btn">Delete</button>
+            <button id="clear-btn" class="action-btn">Clear</button>
+            <button id="exit-btn" class="action-btn">Exit</button>
+        </div>
+        <div class="middle-panel">
+            <textarea id="display-area" class="display-textarea" readonly></textarea>
+            <div id="image-container" class="image-container"></div>
+        </div>
+        <div class="right-panel">
+            <label for="search-name">Search Recipe by Name:</label>
+            <input type="text" id="search-name" name="search-name" class="input-field">
+            <button id="search-btn" class="action-btn">Search</button>
+        </div>
+    </div>
+    <footer class="footer">
+        &copy; 2024 Recipe Finding System
+    </footer>
+</body>
+</html>
