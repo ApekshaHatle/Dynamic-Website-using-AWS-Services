@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recipe Finding System</title>
     <link rel="stylesheet" href="styles.css">
-    <script src="app.js"></script>
+    <script defer src="app.js"></script>
 </head>
 <body>
     <header>
@@ -13,6 +13,14 @@
     </header>
     <div class="container">
         <div class="left-panel">
+            <label for="search-name">Search Recipe by Name:</label>
+            <input type="text" id="search-name" name="search-name" class="input-field">
+            <button id="search-btn" class="action-btn">Search</button>
+            <textarea id="display-area" class="display-textarea" readonly></textarea>
+            <div id="image-container" class="image-container"></div>
+            
+        </div>
+        <div class="right-panel">
             <label for="name">Dish Name:</label>
             <input type="text" id="name" name="name" class="input-field">
             
@@ -21,25 +29,44 @@
             
             <label for="serves">Serves:</label>
             <input type="text" id="serves" name="serves" class="input-field">
+
+            <label for="difficulty">Difficulty:</label>
+            <input type="text" id="difficulty" name="difficulty" class="input-field">
+
+            <label for="cuisine">Cuisine:</label>
+            <input type="text" id="cuisine" name="cuisine" class="input-field">
+
+            <label for="tags">Tags:</label>
+            <input type="text" id="tags" name="tags" class="input-field">
+
+            <label for="addedby">Added By:</label>
+            <input type="text" id="addedby" name="addedby" class="input-field">
+
+            <label for="ingredients">Ingredients:</label>
+            <input type="text" id="ingredients" name="ingredients" class="input-field">
+
+            <label for="image">Image:</label>
+            <input type="text" id="image" name="image" class="input-field">
             
-            <!-- Add more input fields as needed -->
+            <label for="id">ID to Update / Delete :</label>
+            <input type="text" id="id" name="id" class="input-field">
+
             <button id="insert-btn" class="action-btn" onclick="callAPI(document.getElementById('name').value,
                                                                         document.getElementById('prep-time').value,
-                                                                        document.getElementById('serves').value)">Insert</button>
+                                                                        document.getElementById('serves').value,
+                                                                        document.getElementById('difficulty').value,
+                                                                        document.getElementById('cuisine').value,
+                                                                        document.getElementById('tags').value,
+                                                                        document.getElementById('addedby').value,
+                                                                        document.getElementById('ingredients').value,
+                                                                        document.getElementById('image').value)">Insert</button>
+
+                   
+
             <button id="update-btn" class="action-btn">Update</button>
             <button id="delete-btn" class="action-btn">Delete</button>
-            <button id="clear-btn" class="action-btn">Clear</button>
-            <button id="exit-btn" class="action-btn">Exit</button>
-        </div>
-        <div class="middle-panel">
-            <textarea id="display-area" class="display-textarea" readonly></textarea>
-            <div id="image-container" class="image-container"></div>
-        </div>
-        <div class="right-panel">
-            <label for="search-name">Search Recipe by Name:</label>
-            <input type="text" id="search-name" name="search-name" class="input-field">
-            <button id="search-btn" class="action-btn">Search</button>
-        </div>
+            <button id="clear-btn" class="action-btn">Clear</button> 
+        </div>    
     </div>
     <footer class="footer">
         &copy; 2024 Recipe Finding System

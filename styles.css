@@ -12,7 +12,6 @@ body {
 }
 
 .left-panel,
-.middle-panel,
 .right-panel {
     width: calc(33.33% - 30px); /* 33.33% of container width minus margin */
     background-color: #fff;
@@ -41,9 +40,9 @@ body {
 }
 
 .action-btn {
-    display: block;
-    width: 40%;
-    margin: 10px auto;
+    display: inline-block; /* Change to inline-block */
+    width: 21%; /* Remove width */
+    margin: 10px; /* Adjust margin */
     padding: 10px;
     background-color: #D09683;
     color: #fff;
