@@ -23,9 +23,16 @@ var callAPI = (NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Tags, AddedBy,
         redirect: 'follow'
     };
     // make API call with parameters and use promises to get response
+<<<<<<< HEAD
     fetch("PUT-API-URL-HERE", requestOptions)
+=======
+    fetch("YOUR-API-URL", requestOptions)
+>>>>>>> 2c36e31a4a956d335ef13f67becc143f8ad82706
     .then(response => response.text())
     .then(result => alert(JSON.parse(result).body))
     .catch(error => console.log('error', error));
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> 2c36e31a4a956d335ef13f67becc143f8ad82706
