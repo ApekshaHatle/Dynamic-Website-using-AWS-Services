@@ -26,6 +26,9 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
         case 'update':
             method = 'PUT';
             break;
+        case 'delete':
+            method = 'DELETE';
+            break;
         default:
             console.error('Invalid action');
             return;
@@ -80,4 +83,28 @@ document.getElementById("update-btn").addEventListener("click", function() {
 
     // Call the callAPI function with the provided parameters
     callAPI(action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Tags, AddedBy, Ingredients, Image);
+});
+
+// Function to handle delete button click event
+document.getElementById("delete-btn").addEventListener("click", function() {
+    // Retrieve the recipe ID to delete
+    var ID = document.getElementById('id').value;
+    var action = 'delete';
+
+    // Call the callAPI function with the provided parameters
+    callAPI(action, ID, null, null, null, null, null, null, null, null, null);
+});
+
+document.getElementById("clear-btn").addEventListener("click", function() {
+    // Clear all input fields
+    document.getElementById('name').value = '';
+    document.getElementById('prep-time').value = '';
+    document.getElementById('serves').value = '';
+    document.getElementById('difficulty').value = '';
+    document.getElementById('cuisine').value = '';
+    document.getElementById('tags').value = '';
+    document.getElementById('addedby').value = '';
+    document.getElementById('ingredients').value = '';
+    document.getElementById('image').value = '';
+    document.getElementById('id').value = ''; // Also clear the ID field if needed
 });
