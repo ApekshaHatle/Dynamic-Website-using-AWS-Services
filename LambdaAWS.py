@@ -1,38 +1,74 @@
-# import the JSON utility,AWS SDK (for Python the package name is boto3)
 import json
-import math
 import boto3
 import uuid
-# import uuid4
 
-dynamodb = boto3.resource('dynamodb')    # create a DynamoDB object using the AWS SDK
+dynamodb = boto3.resource('dynamodb')
+table = dynamodb.Table('PUT-TABLE-NAME-HERE')
 
-table = dynamodb.Table('OUR-TABLE-NAME')   # use the DynamoDB object to select our table
-
-
-# define the handler function that the Lambda service will use an entry point
 def lambda_handler(event, context):
+    action = event['action']  # Retrieve the action parameter from the event
+    if action == 'insert':
+        return insert_recipe(event)
+    elif action == 'update':
+        return update_recipe(event)
+    else:
+        return {
+            'statusCode': 400,
+            'body': json.dumps('Invalid action')
+        }
 
-# extract the data from the Lambda service's event object
-    NameOfDish = event['NameOfDish']
-    ID = uuid.uuid4().hex
+def insert_recipe(event):
+    try:
+        recipe_data = extract_recipe_data(event)
+        table.put_item(Item=recipe_data)
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Recipe inserted successfully')
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps(str(e))
+        }
 
-# write dish details to the DynamoDB table using the object we instantiated and save response in a variable
-    response = table.put_item(
-        Item={
-            'ID': ID,
-            'NameOfDish': NameOfDish
-            })
+def update_recipe(event):
+    try:
+        recipe_data = extract_recipe_data(event)
+        table.update_item(
+            Key={'ID': event['ID']},
+            UpdateExpression='SET NameOfDish = :n, PrepTime = :p, Serves = :s, Difficulty = :d, Cuisine = :c, Tags = :t, AddedBy = :a, Ingredients = :i, Image = :img',
+            ExpressionAttributeValues={
+                ':n': recipe_data['NameOfDish'],
+                ':p': recipe_data['PrepTime'],
+                ':s': recipe_data['Serves'],
+                ':d': recipe_data['Difficulty'],
+                ':c': recipe_data['Cuisine'],
+                ':t': recipe_data['Tags'],
+                ':a': recipe_data['AddedBy'],
+                ':i': recipe_data['Ingredients'],
+                ':img': recipe_data['Image']
+            }
+        )
+        return {
+            'statusCode': 200,
+            'body': json.dumps('Recipe updated successfully')
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps(str(e))
+        }
 
-# return a properly formatted JSON object
+def extract_recipe_data(event):
     return {
-    'statusCode': 200,
-    'body': json.dumps('Item inserted ' + NameOfDish )
+        'ID': str(uuid.uuid4()),  # Generate a new ID for insert operation
+        'NameOfDish': event['NameOfDish'],
+        'PrepTime': event['PrepTime'],
+        'Serves': event['Serves'],
+        'Difficulty': event['Difficulty'],
+        'Cuisine': event['Cuisine'],
+        'Tags': event['Tags'],
+        'AddedBy': event['AddedBy'],
+        'Ingredients': event['Ingredients'],
+        'Image': event['Image']
     }
-
-
-'''
-TEST JSON CODE :
-
-
-'''
