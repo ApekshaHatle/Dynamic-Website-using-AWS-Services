@@ -29,6 +29,9 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
         case 'delete':
             method = 'DELETE';
             break;
+        case 'search':
+            method = 'GET';
+            break;
         default:
             console.error('Invalid action');
             return;
@@ -37,13 +40,28 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
     var requestOptions = {
         method: method,
         headers: myHeaders,
-        body: JSON.stringify(requestBody),
         redirect: 'follow'
     };
+    
+    if (method !== 'GET' && action !== 'search') { // Add condition to exclude 'search' action
+        requestOptions.body = JSON.stringify(requestBody);
+    }
 
-    fetch("PUT-API-URL-HERE", requestOptions)
-        .then(response => response.text())
-        .then(result => alert(JSON.parse(result).body))
+    fetch("https://fqdxvcbyt2.execute-api.us-west-2.amazonaws.com/Dev*", requestOptions)
+        .then(response => {
+            if (action === 'search') {
+                return response.json();
+            } else {
+                return response.text();
+            }
+        })
+        .then(result => {
+            if (action === 'search') {
+                displaySearchResult(result);
+            } else {
+                alert(result);
+            }
+        })
         .catch(error => console.log('error', error));
 }
 
@@ -108,3 +126,36 @@ document.getElementById("clear-btn").addEventListener("click", function() {
     document.getElementById('image').value = '';
     document.getElementById('id').value = ''; // Also clear the ID field if needed
 });
+
+document.getElementById("search-btn").addEventListener("click", function() {
+    // Retrieve the recipe name to search
+    var searchName = document.getElementById('search-name').value;
+    var action = 'search';
+
+    // Call the callAPI function with the provided parameters
+    callAPI(action, null, searchName, null, null, null, null, null, null, null, null);
+});
+
+// Function to display search results
+function displaySearchResult(result) {
+    var displayArea = document.getElementById('display-area');
+    displayArea.value = ''; // Clear previous search results    
+    
+    displayArea.value = JSON.stringify(result);
+    // if (!Array.isArray(result) || result.length === 0) {
+    //     displayArea.value = 'No recipes found.';
+    // } else {
+    //     result.forEach(recipe => {
+    //         displayArea.value += 'ID: ' + recipe.ID + '\n';
+    //         displayArea.value += 'Name of Dish: ' + recipe.NameOfDish + '\n';
+    //         displayArea.value += 'Preparation Time: ' + recipe.PrepTime + '\n';
+    //         displayArea.value += 'Serves: ' + recipe.Serves + '\n';
+    //         displayArea.value += 'Difficulty: ' + recipe.Difficulty + '\n';
+    //         displayArea.value += 'Cuisine: ' + recipe.Cuisine + '\n';
+    //         displayArea.value += 'Tags: ' + recipe.Tags + '\n';
+    //         displayArea.value += 'Added By: ' + recipe.AddedBy + '\n';
+    //         displayArea.value += 'Ingredients: ' + recipe.Ingredients + '\n';
+    //         displayArea.value += 'Image: ' + recipe.Image + '\n\n';
+    //     });
+    // }
+}

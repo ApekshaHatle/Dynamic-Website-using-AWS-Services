@@ -1,25 +1,39 @@
 body {
+    /* Specify the background image URL from the internet */
+    background-image: url('https://i.pinimg.com/236x/ff/49/3c/ff493c28b729aa8b7fab266d0cd97064.jpg');
+    /* Set background size to cover the entire screen */
+    background-size: cover;
+    /* Center the background image */
+    background-position: center;
+    /* Fix the background image so it doesn't scroll with the content */
+    background-attachment: fixed;
+    /* Add a background color as a fallback */
+
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
     background-color: #f4f4f4;
+    padding-bottom: 50px;
+    
 }
 
 .container {
     display: flex;
-    justify-content: space-between;
-    padding: 20px;
+    flex-direction: column; /* Arrange panels in a column */
+    align-items: center; /* Center the panels horizontally */
 }
 
-.left-panel,
-.right-panel {
-    width: calc(33.33% - 30px); /* 33.33% of container width minus margin */
+.upper-panel,
+.lower-panel {
+    width: calc(50% - 30px); /* 33.33% of container width minus margin */
     background-color: #fff;
     padding: 20px;
     margin: 10px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     flex-grow: 1;
+    display: block; 
+    
 }
 
 .title {

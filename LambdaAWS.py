@@ -114,4 +114,10 @@ TEST LAMBDA :
   "Image": "https://example.com/spaghetti_carbonara.jpg"
 }
 
+TEST FOR SEARCH:
+{
+  "action": "search",
+  "dish_name": "Spaghetti Carbonara"
+}
+
 """
