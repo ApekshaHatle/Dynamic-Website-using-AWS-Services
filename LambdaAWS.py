@@ -1,23 +1,30 @@
 import json
 import boto3
 import uuid
+from boto3.dynamodb.conditions import Key
+from decimal import Decimal
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('Recipe-Details')
 
 def lambda_handler(event, context):
-    action = event['action']  # Retrieve the action parameter from the event
-    if action == 'insert':
-        return insert_recipe(event)
-    elif action == 'update':
-        return update_recipe(event)
-    elif action == 'delete':
-        return delete_recipe(event)
+    print('event:', json.dumps(event))
+    
+    if 'action' in event:
+        action = event['action']
+        if action == 'insert':
+            return insert_recipe(event)
+        elif action == 'update':
+            return update_recipe(event)
+        elif action == 'delete':
+            return delete_recipe(event)
+        else:
+            return {
+                'statusCode': 400,
+                'body': json.dumps('Invalid action')
+            }
     else:
-        return {
-            'statusCode': 400,
-            'body': json.dumps('Invalid action')
-        }
+        return search_recipe(event)
 
 def insert_recipe(event):
     try:
@@ -84,6 +91,36 @@ def delete_recipe(event):
             'body': json.dumps(str(e))
         }
 
+def search_recipe(event):
+    try:
+        dish_name = event['dish_name']
+        
+        # Perform the query operation
+        response = table.scan(
+            FilterExpression=Key('NameOfDish').begins_with(dish_name)
+        )
+        
+        # Extract items from the response
+        recipes = response['Items']
+        
+        # Convert Decimal objects to float for JSON serialization
+        for recipe in recipes:
+            for key, value in recipe.items():
+                if isinstance(value, Decimal):
+                    recipe[key] = float(value)
+        
+        return {
+            'statusCode': 200,
+            'body': json.dumps(recipes)
+        }
+    except Exception as e:
+        return {
+            'statusCode': 500,
+            'body': json.dumps(str(e))
+        }
+
+
+
 def extract_recipe_data(event):
     return {
         'ID': str(uuid.uuid4()),  # Generate a new ID for insert operation
@@ -97,27 +134,3 @@ def extract_recipe_data(event):
         'Ingredients': event['Ingredients'],
         'Image': event['Image']
     }
-
-"""
-TEST LAMBDA : 
-{
-  "action": "update",
-  "ID": "f93e55d4337f4a9ca3a75b3452380d69",
-  "NameOfDish": "Spaghetti Carbonara",
-  "PrepTime": "",
-  "Serves": 4,
-  "Difficulty": "",
-  "Cuisine": "",
-  "Tags": "",
-  "AddedBy": "plschange",
-  "Ingredients": "",
-  "Image": "https://example.com/spaghetti_carbonara.jpg"
-}
-
-TEST FOR SEARCH:
-{
-  "action": "search",
-  "dish_name": "Spaghetti Carbonara"
-}
-
-"""

@@ -3,38 +3,44 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
 
-    // Construct the request body including ID for updating
-    var requestBody = {
-        "action" : action,
-        "ID": ID, // Provide the ID of the recipe to update
-        "NameOfDish": NameOfDish,
-        "PrepTime": PrepTime,
-        "Serves": Serves,
-        "Difficulty": Difficulty,
-        "Cuisine": Cuisine,
-        "Tags": Tags,
-        "AddedBy": AddedBy,
-        "Ingredients": Ingredients,
-        "Image": Image
-    };
-
     var method;
-    switch (action) {
-        case 'insert':
-            method = 'POST';
-            break;
-        case 'update':
-            method = 'PUT';
-            break;
-        case 'delete':
-            method = 'DELETE';
-            break;
-        case 'search':
-            method = 'GET';
-            break;
-        default:
-            console.error('Invalid action');
-            return;
+    var url = "PUT-API-URL-HERE";
+    var requestBody = {};
+
+    if (action !== 'search') {
+        // Construct the request body including ID for updating
+        requestBody = {
+            "action" : action,
+            "ID": ID, // Provide the ID of the recipe to update
+            "NameOfDish": NameOfDish,
+            "PrepTime": PrepTime,
+            "Serves": Serves,
+            "Difficulty": Difficulty,
+            "Cuisine": Cuisine,
+            "Tags": Tags,
+            "AddedBy": AddedBy,
+            "Ingredients": Ingredients,
+            "Image": Image
+        };
+
+        switch (action) {
+            case 'insert':
+                method = 'POST';
+                break;
+            case 'update':
+                method = 'PUT';
+                break;
+            case 'delete':
+                method = 'DELETE';
+                break;
+            default:
+                console.error('Invalid action');
+                return;
+        }
+    } else {
+        // For search action, construct URL with query parameter
+        url += `?dish_name=${NameOfDish}`;
+        method = 'GET';
     }
 
     var requestOptions = {
@@ -43,11 +49,11 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
         redirect: 'follow'
     };
     
-    if (method !== 'GET' && action !== 'search') { // Add condition to exclude 'search' action
+    if (method !== 'GET' && action !== 'search') { 
         requestOptions.body = JSON.stringify(requestBody);
     }
 
-    fetch("https://fqdxvcbyt2.execute-api.us-west-2.amazonaws.com/Dev*", requestOptions)
+    fetch(url, requestOptions)
         .then(response => {
             if (action === 'search') {
                 return response.json();
@@ -59,7 +65,7 @@ var callAPI = (action, ID, NameOfDish, PrepTime, Serves, Difficulty, Cuisine, Ta
             if (action === 'search') {
                 displaySearchResult(result);
             } else {
-                alert(result);
+                alert(JSON.parse(result).body + ID);
             }
         })
         .catch(error => console.log('error', error));
@@ -139,9 +145,23 @@ document.getElementById("search-btn").addEventListener("click", function() {
 // Function to display search results
 function displaySearchResult(result) {
     var displayArea = document.getElementById('display-area');
-    displayArea.value = ''; // Clear previous search results    
+    displayArea.value = ''; // Clear previous search results 
     
-    displayArea.value = JSON.stringify(result);
+    recipe = JSON.parse(JSON.parse(JSON.stringify(result.body)))[0];
+    
+    displayArea.value += 'ID: ' + recipe.ID + '\n';
+    displayArea.value += 'Name of Dish: ' + recipe.NameOfDish + '\n';
+    displayArea.value += 'Preparation Time: ' + recipe.PrepTime + '\n';
+    displayArea.value += 'Serves: ' + recipe.Serves + '\n';
+    displayArea.value += 'Difficulty: ' + recipe.Difficulty + '\n';
+    displayArea.value += 'Cuisine: ' + recipe.Cuisine + '\n';
+    displayArea.value += 'Tags: ' + recipe.Tags + '\n';
+    displayArea.value += 'Added By: ' + recipe.AddedBy + '\n';
+    displayArea.value += 'Ingredients: ' + recipe.Ingredients + '\n';
+    displayArea.value += 'Image: ' + recipe.Image + '\n\n';
+    
+    
+    // displayArea.value = result;
     // if (!Array.isArray(result) || result.length === 0) {
     //     displayArea.value = 'No recipes found.';
     // } else {
@@ -159,3 +179,5 @@ function displaySearchResult(result) {
     //     });
     // }
 }
+
+
