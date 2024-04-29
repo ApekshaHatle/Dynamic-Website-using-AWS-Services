@@ -8,16 +8,25 @@
     <script defer src="app.js"></script>
 </head>
 <body>
-    <header>
-        <h1 class="title">RECIPE FINDING SYSTEM</h1>
-    </header>
+    <nav class="navbar">
+        <div class="container">
+            <h1 class="logo">Recipe Finding System</h1>
+            <ul class="nav-links">
+                <li><a href="#">Home</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+            </ul>
+        </div>
+    </nav>
     <div class="container">
         <div class="upper-panel">
             <label for="search-name">Search Recipe by Name:</label>
             <input type="text" id="search-name" name="search-name" class="input-field">
             <button id="search-btn" class="action-btn">Search</button>
             <textarea id="display-area" class="display-textarea" readonly></textarea>
-            <div id="image-container" class="image-container"></div>
+            <div id="image-container" class="image-container">
+                <img id="recipe-image" src="" alt="Recipe Image">
+            </div>
         </div>
         <div class="lower-panel">
             <label for="name">Dish Name:</label>

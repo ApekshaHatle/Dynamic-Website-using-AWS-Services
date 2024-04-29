@@ -158,26 +158,11 @@ function displaySearchResult(result) {
     displayArea.value += 'Tags: ' + recipe.Tags + '\n';
     displayArea.value += 'Added By: ' + recipe.AddedBy + '\n';
     displayArea.value += 'Ingredients: ' + recipe.Ingredients + '\n';
-    displayArea.value += 'Image: ' + recipe.Image + '\n\n';
+    //displayArea.value += 'Image: ' + recipe.Image + '\n\n';
     
     
-    // displayArea.value = result;
-    // if (!Array.isArray(result) || result.length === 0) {
-    //     displayArea.value = 'No recipes found.';
-    // } else {
-    //     result.forEach(recipe => {
-    //         displayArea.value += 'ID: ' + recipe.ID + '\n';
-    //         displayArea.value += 'Name of Dish: ' + recipe.NameOfDish + '\n';
-    //         displayArea.value += 'Preparation Time: ' + recipe.PrepTime + '\n';
-    //         displayArea.value += 'Serves: ' + recipe.Serves + '\n';
-    //         displayArea.value += 'Difficulty: ' + recipe.Difficulty + '\n';
-    //         displayArea.value += 'Cuisine: ' + recipe.Cuisine + '\n';
-    //         displayArea.value += 'Tags: ' + recipe.Tags + '\n';
-    //         displayArea.value += 'Added By: ' + recipe.AddedBy + '\n';
-    //         displayArea.value += 'Ingredients: ' + recipe.Ingredients + '\n';
-    //         displayArea.value += 'Image: ' + recipe.Image + '\n\n';
-    //     });
-    // }
+    var recipeImage = document.getElementById('recipe-image');
+    recipeImage.src = recipe.Image;
+    recipeImage.alt = 'Recipe Image'; // Optionally set the alt text
 }
-
 
